@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/ajstarks/svgo"
-	"log"
-	"math/rand"
-	"net/http"
+    "github.com/ajstarks/svgo"
+    "log"
+    "math/rand"
+    "net/http"
+    "strconv"
 )
 
 func main() {
@@ -15,6 +16,12 @@ func main() {
         log.Fatal("ListenAndServe:", err)
     }
 }
+
+const (
+    svgW = 7680
+    svgH = 4320
+    strokeW = 2
+)
 
 type circle struct {
     X int
@@ -28,10 +35,11 @@ func renderCircles(w http.ResponseWriter, req *http.Request) {
 
     w.Header().Set("Content-Type", "image/svg+xml")
     s := svg.New(w)
-    s.Start(500, 500)
+    s.Start(svgW, svgH)
     for i := 0; i < len(circles); i++ {
         circle := circles[i]
-        s.Circle(circle.X, circle.Y, circle.R, "fill:none;stroke:black")
+        circleStyle := "fill:none;stroke:black;stroke-width:" + strconv.Itoa(strokeW)
+        s.Circle(circle.X, circle.Y, circle.R, circleStyle)
     }
     s.End()
 }
@@ -39,9 +47,12 @@ func renderCircles(w http.ResponseWriter, req *http.Request) {
 func generateCircles() []circle {
     var circles []circle;
 
-    for i := 0; i < 100; i++ {
+    for i := 0; i < 1000; i++ {
         radius := 3 + rand.Intn(100 - 3)
-        circles = append(circles, circle{1 + radius + rand.Intn(498 - 2 * radius), 1 + radius + rand.Intn(498 - 2 * radius), radius})
+        x := 1 + radius + rand.Intn((svgW - 2 * strokeW) - (2 * radius))
+        y := 1 + radius + rand.Intn((svgH - 2 * strokeW) - (2 * radius))
+        circle := circle{x, y, radius}
+        circles = append(circles, circle)
     }
 
     return circles
