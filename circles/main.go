@@ -19,8 +19,8 @@ func main() {
 }
 
 const (
-    svgW = 1670 // 7680
-    svgH = 950 // 4320
+    svgW = 1680 // 7680
+    svgH = 1050 // 4320
     strokeW = 0 // 2
 )
 
