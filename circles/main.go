@@ -43,7 +43,10 @@ func renderCircles(w http.ResponseWriter, req *http.Request) {
     for i := 0; i < len(circles); i++ {
         circle := circles[i]
         fill := colors[rand.Intn(len(colors))]
-        circleStyle := "fill:" + fill + ";stroke:black;stroke-width:" + strconv.Itoa(strokeW)
+        circleStyle := "fill:" + fill + ";"
+        if strokeW > 0 {
+            circleStyle += "stroke:black;stroke-width:" + strconv.Itoa(strokeW)
+        }
         s.Circle(circle.X, circle.Y, circle.R, circleStyle)
     }
     s.End()
