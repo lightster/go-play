@@ -55,8 +55,8 @@ func renderCircles(w http.ResponseWriter, req *http.Request) {
 func generateCircles() []circle {
     var circles []circle
 
-    for len(circles) < 6500 { // }(svgW + svgH) {
-        radius := 3 + rand.Intn(100 - 3)
+    for len(circles) < 2500 { // }(svgW + svgH) {
+        radius := 3 + rand.Intn(30 - 3)
         x := 1 + radius + rand.Intn((svgW - 2 * strokeW) - (2 * radius))
         y := 1 + radius + rand.Intn((svgH - 2 * strokeW) - (2 * radius))
         circle := circle{x, y, radius}
