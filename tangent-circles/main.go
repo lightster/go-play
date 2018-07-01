@@ -22,13 +22,13 @@ const (
     svgW = 800 // 1680 // 7680
     svgH = 600 // 1050 // 4320
     strokeW = 0 // 2
-    minR = 20
-    maxR = 90
+    minR = 10
+    maxR = 30
 )
 
 var (
     // colors = [3]string{"rgba(204, 204, 255, .5)", "rgba(204, 255, 204, .5)", "rgba(204, 234, 255, .5)"}
-    colors = [3]string{"rgba(255, 0, 0, .5)", "rgba(0, 255, 0, .5)", "rgba(0, 0, 255, .5)"}
+    colors = []string{"rgba(255, 0, 0, .5)", "rgba(0, 255, 0, .5)", "rgba(0, 0, 255, .5)", "rgba(204, 0, 255, .5)"}
     s *svg.SVG
 )
 
@@ -47,7 +47,7 @@ func renderCircles(w http.ResponseWriter, req *http.Request) {
 
     for i := 0; i < len(circles); i++ {
         circle := circles[i]
-        fill := colors[i % 3] // rand.Intn(len(colors))]
+        fill := colors[i % len(colors)] // rand.Intn(len(colors))]
         circleStyle := "fill:" + fill + ";"
         if strokeW > 0 {
             circleStyle += "stroke:black;stroke-width:" + strconv.Itoa(strokeW)
@@ -66,8 +66,14 @@ func generateCircles() []circle {
     second := generateSecondCircle(first)
     circles = append(circles, second)
 
-    third := generateCirclesmallerToTwoCircles(first, second)
+    third := generateCirclesmallerToTwoCircles(first, second, 1)
     circles = append(circles, third)
+
+    fourth := generateCirclesmallerToTwoCircles(first, second, -1)
+    circles = append(circles, fourth)
+
+    // circles = append(circles, generateCirclesmallerToTwoCircles(first, third, -1))
+    // circles = append(circles, generateCirclesmallerToTwoCircles(second, third, 1))
 
     return circles
 }
@@ -109,7 +115,7 @@ func generateSecondCircle(first circle) circle {
 }
 
 // http://jwilson.coe.uga.edu/EMAT6680Su06/Swanagan/Assignment7/BSAssignment7.html
-func generateCirclesmallerToTwoCircles(first circle, second circle) circle {
+func generateCirclesmallerToTwoCircles(first circle, second circle, angleOffset float64) circle {
     smaller, larger := first, second
     if smaller.R > larger.R {
        smaller, larger = larger, smaller
@@ -119,7 +125,7 @@ func generateCirclesmallerToTwoCircles(first circle, second circle) circle {
     overlap := circle{}
 
     angle := math.Atan2(float64(smaller.Y - larger.Y), float64(smaller.X - larger.X))
-    overlapAngle := angle + math.Pi * (rand.Float64() * .1 + .2)
+    overlapAngle := angle + math.Pi * (rand.Float64() * .1 + .2) * angleOffset
 
     overlap.R = smaller.R
     overlapX := float64(larger.X) + float64(larger.R) * math.Cos(overlapAngle)
