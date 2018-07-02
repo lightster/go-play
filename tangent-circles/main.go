@@ -125,7 +125,7 @@ func generateCirclesTangentToTwoCircles(first circle, second circle, angleOffset
     overlap := circle{}
 
     angle := math.Atan2(float64(smaller.Y - larger.Y), float64(smaller.X - larger.X))
-    overlapAngle := angle + math.Pi * (rand.Float64() * .1 + .2) * angleOffset
+    overlapAngle := angle + math.Pi * (rand.Float64() * .15 + .15) * angleOffset
 
     overlap.R = smaller.R
     overlapX := float64(larger.X) + float64(larger.R) * math.Cos(overlapAngle)
