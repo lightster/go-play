@@ -66,12 +66,75 @@ func generateCircles() []circle {
     second := generateSecondCircle(first)
     circles = append(circles, second)
 
+     // var tryCircles [][2]circle
+     // tryCircles = append(tryCircles, [2]circle{first, second})
+     // for len(tryCircles) > 0 && len(circles) < 1000 {
+     //     var try [2]circle
+     //     try, tryCircles = tryCircles[0], tryCircles[1:]
+
+     //     var newCircle circle
+     //     newCircle = generateCirclesTangentToTwoCircles(try[0], try[1], 1)
+     //     if circleFits(circles, newCircle) {
+     //         circles = append(circles, newCircle)
+     //         tryCircles = append(tryCircles, [2]circle{try[0], newCircle})
+     //         tryCircles = append(tryCircles, [2]circle{try[1], newCircle})
+     //         newCircle = generateSecondCircle(newCircle)
+     //         if circleFits(circles, newCircle) {
+     //             circles = append(circles, newCircle)
+     //         }
+     //     }
+     //     newCircle = generateCirclesTangentToTwoCircles(try[0], try[1], -1)
+     //     if circleFits(circles, newCircle) {
+     //         circles = append(circles, newCircle)
+     //         tryCircles = append(tryCircles, [2]circle{try[0], newCircle})
+     //         tryCircles = append(tryCircles, [2]circle{try[1], newCircle})
+     //         newCircle = generateSecondCircle(newCircle)
+     //         if circleFits(circles, newCircle) {
+     //             circles = append(circles, newCircle)
+     //         }
+     //     }
+     //     log.Println(strconv.Itoa(len(circles)) + " " + strconv.Itoa(len(tryCircles)))
+     // }
+
     third := generateCirclesTangentToTwoCircles(first, second, 1)
     circles = append(circles, third)
 
     fourth := generateCirclesTangentToTwoCircles(first, second, -1)
     circles = append(circles, fourth)
 
+    // var circle circle
+    // circle = generateCirclesTangentToTwoCircles(first, third, 1)
+    // if (circleFits(circles, circle)) {
+    //     circles = append(circles, circle)
+    // }
+    // circle = generateCirclesTangentToTwoCircles(first, third, -1)
+    // if (circleFits(circles, circle)) {
+    //     circles = append(circles, circle)
+    // }
+    // circle = generateCirclesTangentToTwoCircles(second, third, 1)
+    // if (circleFits(circles, circle)) {
+    //     circles = append(circles, circle)
+    // }
+    // circle = generateCirclesTangentToTwoCircles(second, third, -1)
+    // if (circleFits(circles, circle)) {
+    //     circles = append(circles, circle)
+    // }
+    // circle = generateCirclesTangentToTwoCircles(first, fourth, 1)
+    // if (circleFits(circles, circle)) {
+    //     circles = append(circles, circle)
+    // }
+    // circle = generateCirclesTangentToTwoCircles(first, fourth, -1)
+    // if (circleFits(circles, circle)) {
+    //     circles = append(circles, circle)
+    // }
+    // circle = generateCirclesTangentToTwoCircles(second, fourth, 1)
+    // if (circleFits(circles, circle)) {
+    //     circles = append(circles, circle)
+    // }
+    // circle = generateCirclesTangentToTwoCircles(second, fourth, -1)
+    // if (circleFits(circles, circle)) {
+    //     circles = append(circles, circle)
+    // }
     // circles = append(circles, generateCirclesTangentToTwoCircles(first, third, -1))
     // circles = append(circles, generateCirclesTangentToTwoCircles(second, third, 1))
 
@@ -177,3 +240,18 @@ func generateCirclesTangentToTwoCircles(first circle, second circle, angleOffset
 // https://en.wikipedia.org/wiki/De_Moivre%27s_formula
 // https://www.khanacademy.org/math/precalculus/imaginary-and-complex-numbers/multiplying-and-dividing-complex-numbers-in-polar-form/a/complex-number-polar-form-review
 // https://www.varsitytutors.com/hotmath/hotmath_help/topics/polar-form-of-a-complex-number
+
+
+func circleFits(circles []circle, proposed circle) bool {
+    for _, circle := range circles {
+        if circlesIntersect(proposed, circle) {
+            return false
+        }
+    }
+
+    return true
+}
+
+func circlesIntersect(proposed circle, existing circle) bool {
+    return math.Sqrt(math.Pow(float64(proposed.X - existing.X), 2) + math.Pow(float64(proposed.Y - existing.Y), 2)) + .2 < float64(proposed.R + existing.R)
+}
