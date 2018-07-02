@@ -66,14 +66,14 @@ func generateCircles() []circle {
     second := generateSecondCircle(first)
     circles = append(circles, second)
 
-    third := generateCirclesmallerToTwoCircles(first, second, 1)
+    third := generateCirclesTangentToTwoCircles(first, second, 1)
     circles = append(circles, third)
 
-    fourth := generateCirclesmallerToTwoCircles(first, second, -1)
+    fourth := generateCirclesTangentToTwoCircles(first, second, -1)
     circles = append(circles, fourth)
 
-    // circles = append(circles, generateCirclesmallerToTwoCircles(first, third, -1))
-    // circles = append(circles, generateCirclesmallerToTwoCircles(second, third, 1))
+    // circles = append(circles, generateCirclesTangentToTwoCircles(first, third, -1))
+    // circles = append(circles, generateCirclesTangentToTwoCircles(second, third, 1))
 
     return circles
 }
@@ -115,7 +115,7 @@ func generateSecondCircle(first circle) circle {
 }
 
 // http://jwilson.coe.uga.edu/EMAT6680Su06/Swanagan/Assignment7/BSAssignment7.html
-func generateCirclesmallerToTwoCircles(first circle, second circle, angleOffset float64) circle {
+func generateCirclesTangentToTwoCircles(first circle, second circle, angleOffset float64) circle {
     smaller, larger := first, second
     if smaller.R > larger.R {
        smaller, larger = larger, smaller
